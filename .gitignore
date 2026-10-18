@@ -25,3 +25,4 @@ examples/t_rex/artifacts/
 *.bin
 *.ckpt
 .venv-vision/
+hf_export/

@@ -1,6 +1,7 @@
 """Second Eye HTTP API: image -> calibrated answer distribution.  Separate from ``clm-serve``.
 
     python -m clm.vision.serve --port 8701                                         # in-process Qwen3-8B
+    python -m clm.vision.serve --model harvinderbhullar/second-eye                 # head from the HF Hub
     python -m clm.vision.serve --port 8701 --emb-url http://127.0.0.1:8090/v1/embeddings   # vLLM encoder
 
     curl -s -X POST localhost:8701/predict -F image=@xray.jpg
@@ -40,14 +41,21 @@ DISCLAIMER = "Research prototype, not a medical device. Not for clinical use."
 
 
 class Predictor:
-    def __init__(self, emb_url: str | None = None, ckpt_dir: str = CKPT_DIR, cache_size: int = 256):
-        with open(os.path.join(ckpt_dir, "calibration.json")) as f:
-            self.cal = json.load(f)
-        self.variant = self.cal["variant"]
+    def __init__(self, emb_url: str | None = None, ckpt_dir: str = CKPT_DIR, cache_size: int = 256,
+                 model: str | None = None):
+        self.dev = device()
+        if model:                       # a Hub repo id or a `clm.vision.hub export` dir
+            from .hub import load
+            self.head, trained_options, self.cal, cfg = load(model, self.dev)
+            self.variant = cfg["variant"]
+        else:
+            with open(os.path.join(ckpt_dir, "calibration.json")) as f:
+                self.cal = json.load(f)
+            self.variant = self.cal["variant"]
+            self.head, ck = StateHead.load(os.path.join(ckpt_dir, f"{self.variant}.pt"), self.dev)
+            trained_options = ck["options"]
         self.platt = Platt(**self.cal["platt"])
         self.threshold = self.cal["threshold_sens90"]
-        self.dev = device()
-        self.head, ck = StateHead.load(os.path.join(ckpt_dir, f"{self.variant}.pt"), self.dev)
         self.encoder = ENCODERS[self.variant.split("_")[0]](self.dev)
         self.action = action_head(dev=self.dev)
         if emb_url:
@@ -56,7 +64,7 @@ class Predictor:
         else:
             self.embedder = LocalQwenEmbedder(dev=self.dev)
         self.cache: OrderedDict[tuple[str, ...], torch.Tensor] = OrderedDict()
-        self.cache[tuple(OPTIONS)] = ck["options"].to(self.dev)        # the trained options, as trained
+        self.cache[tuple(OPTIONS)] = trained_options.to(self.dev)        # the trained options, as trained
         self.cache_size = cache_size
 
     def options(self, texts: list[str]) -> torch.Tensor:
@@ -85,9 +93,9 @@ class Predictor:
                 "decision": options[int(probs.argmax())], "threshold": None, "operating_point": "argmax"}
 
 
-def create_app(emb_url: str | None = None) -> FastAPI:
+def create_app(emb_url: str | None = None, model: str | None = None) -> FastAPI:
     app = FastAPI(title="Second Eye", description=DISCLAIMER)
-    pred = Predictor(emb_url)          # every model loads once, here
+    pred = Predictor(emb_url, model=model)          # every model loads once, here
 
     @app.get("/health")
     def health() -> dict:
@@ -125,8 +133,9 @@ def main() -> None:
     ap.add_argument("--host", default="127.0.0.1")
     ap.add_argument("--port", type=int, default=8701)
     ap.add_argument("--emb-url", default=os.environ.get("CLM_EMB_URL"))
+    ap.add_argument("--model", default=None, help="Hub repo id or export dir (default: local checkpoints/vision)")
     a = ap.parse_args()
-    uvicorn.run(create_app(a.emb_url), host=a.host, port=a.port)
+    uvicorn.run(create_app(a.emb_url, a.model), host=a.host, port=a.port)
 
 
 if __name__ == "__main__":
