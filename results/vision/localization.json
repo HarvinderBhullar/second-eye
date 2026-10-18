@@ -1,0 +1,40 @@
+{
+  "split": "val",
+  "n_images": 105,
+  "window_patches": 3,
+  "tolerance_px_at_512": 16,
+  "pointing_game_hit_rate": 0.06666666666666667,
+  "hit_rate_ci95_wilson": [
+    0.032665468928650555,
+    0.13125714889394666
+  ],
+  "chance_hit_rate": 0.027715773809523808,
+  "centre_baseline_hit_rate": 0.2,
+  "by_region": {
+    "hand": {
+      "n": 55,
+      "hit_rate": 0.073,
+      "chance": 0.021
+    },
+    "hip": {
+      "n": 2,
+      "hit_rate": 0.0,
+      "chance": 0.076
+    },
+    "leg": {
+      "n": 35,
+      "hit_rate": 0.086,
+      "chance": 0.038
+    },
+    "mixed": {
+      "n": 12,
+      "hit_rate": 0.0,
+      "chance": 0.02
+    },
+    "shoulder": {
+      "n": 1,
+      "hit_rate": 0.0,
+      "chance": 0.024
+    }
+  }
+}

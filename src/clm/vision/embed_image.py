@@ -56,12 +56,18 @@ class RadioEncoder:
         self.model = AutoModel.from_pretrained(RADIO_REPO, trust_remote_code=True).eval().to(self.dev)
 
     @torch.no_grad()
-    def __call__(self, tiles: list[np.ndarray]) -> dict[str, np.ndarray]:
+    def raw(self, tiles: list[np.ndarray]) -> tuple[torch.Tensor, torch.Tensor]:
+        """-> (summary [b, 3840], spatial patch features [b, 1024, 1280]) on the device."""
         # RADIO takes [0, 1] RGB and normalises internally (its input conditioner).
         x = torch.from_numpy(np.stack(tiles)).permute(0, 3, 1, 2).float().div(255).to(self.dev)
-        summary, spatial = self.model(x)                       # [b, 3840], [b, 1024, 1280]
+        return self.model(x)
+
+    def pool(self, summary: torch.Tensor, spatial: torch.Tensor) -> dict[str, np.ndarray]:
         return {"radio_mean": l2(spatial.mean(1).float().cpu().numpy()),
                 "radio_summary": l2(summary.float().cpu().numpy())}
+
+    def __call__(self, tiles: list[np.ndarray]) -> dict[str, np.ndarray]:
+        return self.pool(*self.raw(tiles))
 
 
 ENCODERS = {"radio": RadioEncoder}
