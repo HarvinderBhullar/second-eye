@@ -24,6 +24,10 @@ browser ──▶ Second Eye (FastAPI + Gradio, CPU only) ──HTTP──▶ vL
 
 The app holds no model weights and needs no GPU. It only talks to the model endpoints over HTTP.
 
+This app lives in the `app/` folder of the [second-eye](https://github.com/HarvinderBhullar/second-eye)
+repo, next to the model code. It is a separate project: it has its own dependencies and only talks to
+the model servers over HTTP. Run every command below from `app/`.
+
 ## Layout
 
 | Path | Purpose |
@@ -47,6 +51,7 @@ The app holds no model weights and needs no GPU. It only talks to the model endp
 Requires Python 3.11 or newer.
 
 ```bash
+cd app
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env            # then edit
@@ -113,7 +118,7 @@ Run the app on a small CPU VM. vLLM runs on its own GPU VM in the same VPC netwo
 
 ```bash
 # on the CPU VM
-git clone <repo> second-eye && cd second-eye
+git clone https://github.com/HarvinderBhullar/second-eye.git && cd second-eye/app
 docker build -t second-eye .
 cp .env.example .env && vi .env     # VLLM_BASE_URL=http://<gpu-vm-private-ip>:8000/v1, etc.
 docker run -d --name second-eye --restart unless-stopped --env-file .env -p 8080:8080 second-eye
@@ -138,7 +143,8 @@ imports the same FastAPI app (`second_eye.main:app`, with Gradio mounted at `/` 
 available) and serves it with uvicorn on port 7860, which is what the Space expects.
 
 1. Create a Space with the Gradio SDK, then push this repo to it:
-   `git remote add space https://huggingface.co/spaces/<user>/second-eye && git push space main`.
+   The Space needs the app at its root, so push only the `app/` folder, from the repo root:
+   `git remote add space https://huggingface.co/spaces/<user>/second-eye && git subtree push --prefix app space main`.
 2. Under *Settings → Variables and secrets*, add `VLLM_BASE_URL`, `VLLM_MODEL`, and `VLLM_API_KEY`
    (as a secret). For a demo without a model, set `MOCK_VLLM=1`. Leave `CLM_URL` unset to hide the
    Two readers panel.
