@@ -1,0 +1,149 @@
+{
+  "variant": "radio_summary",
+  "n_test": 591,
+  "n_test_fractured": 104,
+  "n_bootstrap": 1000,
+  "results": [
+    {
+      "method": "CLM head \u00b7 radio_summary",
+      "val_auroc": 0.9353517538702725,
+      "test_auroc": 0.9246367082609382,
+      "test_auroc_ci95": [
+        0.8912262083399147,
+        0.9528194598009793
+      ],
+      "ece_raw": 0.06228228567590442,
+      "ece_platt": 0.019553412016726994,
+      "youden": {
+        "threshold": 0.3394530117511749,
+        "sensitivity": 0.7596153846153846,
+        "specificity": 0.9383983572895277
+      },
+      "sens90": {
+        "threshold": 0.0674779936671257,
+        "sensitivity": 0.9134615384615384,
+        "specificity": 0.7227926078028748
+      }
+    },
+    {
+      "method": "Linear probe \u00b7 radio_summary",
+      "val_auroc": 0.9264550264550264,
+      "test_auroc": 0.8926512399305008,
+      "test_auroc_ci95": [
+        0.8500422030484915,
+        0.9306682889748854
+      ],
+      "ece_raw": 0.08486135904369922,
+      "ece_platt": 0.040739899170277684,
+      "youden": {
+        "threshold": 0.24508120119571686,
+        "sensitivity": 0.75,
+        "specificity": 0.9055441478439425
+      },
+      "sens90": {
+        "threshold": 0.06135338544845581,
+        "sensitivity": 0.8846153846153846,
+        "specificity": 0.6119096509240246
+      }
+    },
+    {
+      "method": "Resolution only (leakage check)",
+      "val_auroc": 0.5950715265530081,
+      "test_auroc": 0.6163718211972832,
+      "test_auroc_ci95": [
+        0.5773418989891013,
+        0.6564425051334702
+      ],
+      "ece_raw": 0.3227225914667588,
+      "ece_platt": 0.025008008140783248,
+      "youden": {
+        "threshold": 0.19330868817628627,
+        "sensitivity": 0.9326923076923077,
+        "specificity": 0.26899383983572894
+      },
+      "sens90": {
+        "threshold": 0.19330868817628627,
+        "sensitivity": 0.9326923076923077,
+        "specificity": 0.26899383983572894
+      }
+    }
+  ],
+  "ablations": [
+    {
+      "method": "(a) random option vectors \u00b7 radio_summary",
+      "val_auroc": 0.9349990201842053,
+      "test_auroc": 0.9134220502290317,
+      "test_auroc_ci95": [
+        0.8780519467698625,
+        0.9448591257305324
+      ],
+      "ece_raw": 0.07497044227223107,
+      "ece_platt": 0.026583862867578235,
+      "youden": {
+        "threshold": 0.2343926727771759,
+        "sensitivity": 0.7884615384615384,
+        "specificity": 0.8891170431211499
+      },
+      "sens90": {
+        "threshold": 0.08470096439123154,
+        "sensitivity": 0.875,
+        "specificity": 0.7330595482546202
+      }
+    }
+  ],
+  "paraphrases": [
+    {
+      "options": [
+        "A fracture is present.",
+        "No fracture is present."
+      ],
+      "test_auroc": 0.918140894013584,
+      "sens_at_sens90_threshold": 0.9807692307692307,
+      "spec_at_sens90_threshold": 0.11498973305954825
+    },
+    {
+      "options": [
+        "Yes, the bone is broken.",
+        "No, the bone is intact."
+      ],
+      "test_auroc": 0.9180026851998105,
+      "sens_at_sens90_threshold": 0.9807692307692307,
+      "spec_at_sens90_threshold": 0.23203285420944558
+    },
+    {
+      "options": [
+        "This radiograph shows a fractured bone.",
+        "This radiograph shows no fracture."
+      ],
+      "test_auroc": 0.9216750908229349,
+      "sens_at_sens90_threshold": 1.0,
+      "spec_at_sens90_threshold": 0.0
+    },
+    {
+      "options": [
+        "Fracture detected.",
+        "No fracture detected."
+      ],
+      "test_auroc": 0.9128692149739378,
+      "sens_at_sens90_threshold": 0.9711538461538461,
+      "spec_at_sens90_threshold": 0.28952772073921973
+    },
+    {
+      "options": [
+        "Yes, I can see a break in the bone.",
+        "No, I cannot see any break in the bone."
+      ],
+      "test_auroc": 0.9260187963986731,
+      "sens_at_sens90_threshold": 0.9807692307692307,
+      "spec_at_sens90_threshold": 0.44353182751540043
+    }
+  ],
+  "calibration": {
+    "platt": {
+      "a": 0.48017218708992004,
+      "b": -0.5284084677696228
+    },
+    "threshold_youden": 0.3394530117511749,
+    "threshold_sens90": 0.0674779936671257
+  }
+}
