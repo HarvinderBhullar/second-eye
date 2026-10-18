@@ -34,7 +34,9 @@ class Settings:
     vllm_model: str = ""
     vllm_timeout: float = 90.0
     clm_url: str = ""
-    clm_model: str = "fracatlas-medsiglip"
+    clm_api_key: str = ""
+    clm_timeout: float = 30.0
+    clm_model: str = "harvinderbhullar/second-eye"  # display only; the server picks its own head
     demo_images: list[tuple[str, str]] = field(default_factory=list)
     mock_vllm: bool = False
     mock_clm: bool = False  # CLM_URL points at a stand-in (e.g. tests/fake_clm.py); only labels the UI
@@ -52,7 +54,9 @@ class Settings:
             vllm_model=env.get("VLLM_MODEL", "").strip(),
             vllm_timeout=float(env.get("VLLM_TIMEOUT", "") or 90),
             clm_url=env.get("CLM_URL", "").strip().rstrip("/"),
-            clm_model=env.get("CLM_MODEL", "").strip() or "fracatlas-medsiglip",
+            clm_api_key=env.get("CLM_API_KEY", "").strip(),
+            clm_timeout=float(env.get("CLM_TIMEOUT", "") or 30),
+            clm_model=env.get("CLM_MODEL", "").strip() or "harvinderbhullar/second-eye",
             demo_images=_parse_demo_images(env.get("DEMO_IMAGES")),
             mock_vllm=_flag(env.get("MOCK_VLLM")),
             mock_clm=_flag(env.get("MOCK_CLM")),

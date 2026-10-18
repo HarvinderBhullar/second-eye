@@ -67,6 +67,8 @@ class ClmResult(BaseModel):
     threshold: float | None = None
     flagged: bool | None = None
     latency_ms: float | None = None
+    calibrated: bool | None = None
+    operating_point: str | None = None
     error: str | None = None
 
 

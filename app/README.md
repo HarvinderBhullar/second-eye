@@ -15,11 +15,11 @@ short_description: Research prototype second reading of X-rays for fractures
 
 **Research prototype, not a medical device.** You upload an X-ray and a vision-language model (VLM)
 served by vLLM gives a second reading for possible fractures. You can also add a calibrated
-classifier (clm-serve) as a second reader. Second Eye supports a clinician's review; it does not replace it.
+image head (`clm.vision.serve`, in this repo) as a second reader. Second Eye supports a clinician's review; it does not replace it.
 
 ```
 browser ──▶ Second Eye (FastAPI + Gradio, CPU only) ──HTTP──▶ vLLM  /v1/chat/completions
-                                                     └─HTTP──▶ clm-serve /v1/systemone (optional)
+                                                     └─HTTP──▶ image head  /predict (optional)
 ```
 
 The app holds no model weights and needs no GPU. It only talks to the model endpoints over HTTP.
@@ -36,7 +36,7 @@ the model servers over HTTP. Run every command below from `app/`.
 | `second_eye/prompts.py` | System and user prompts (tune here) |
 | `second_eye/schemas.py` | `Reading` model, JSON schema sent to vLLM, API response models |
 | `second_eye/vllm_client.py` | Chat-completions call, `response_format` fallback, JSON extraction, mock |
-| `second_eye/clm_client.py` | Optional clm-serve call (never raises) |
+| `second_eye/clm_client.py` | Optional image-head call, `POST /predict` (never raises) |
 | `second_eye/analyze.py` | The one analysis path: validate → downscale → vLLM ∥ CLM → agreement (`analyze_stream` reports each reader as it finishes) |
 | `second_eye/ui.py` | Gradio Blocks layout and event wiring |
 | `second_eye/ui_render.py` | Pure functions that turn an analyze result dict into card HTML |
@@ -75,12 +75,14 @@ The fake CLM's "probability" is the image's mean brightness (threshold 0.112, wi
 | `VLLM_API_KEY` | empty | Sent as `Authorization: Bearer …` if set |
 | `VLLM_MODEL` | none | Exact served model id, as listed by `GET /v1/models` |
 | `VLLM_TIMEOUT` | `90` | Seconds per vLLM request |
-| `CLM_URL` | empty | clm-serve base URL. Empty hides the Two readers panel |
-| `CLM_MODEL` | `fracatlas-medsiglip` | Model name sent to clm-serve |
+| `CLM_URL` | empty | Base URL of the image head (`python -m clm.vision.serve`), e.g. the Nebius endpoint's `https://` URL. Empty hides the Two readers panel |
+| `CLM_API_KEY` | empty | Sent as `Authorization: Bearer …`: the Nebius endpoint token, or the server's `SECOND_EYE_API_KEY` |
+| `CLM_TIMEOUT` | `30` | Seconds per image-head request |
+| `CLM_MODEL` | `harvinderbhullar/second-eye` | Display only (health fallback); the server chooses its own head |
 | `DEMO_IMAGES` | empty | `Label=path;Label=path` one-click examples (missing files are skipped with a log warning) |
 | `MOCK_VLLM` | `0` | `1` returns a canned, clearly labelled fake VLM reply |
 | `MOCK_CLM` | `0` | `1` when `CLM_URL` points at a stand-in such as `tests/fake_clm.py`. It only labels the CLM numbers as not real in the UI |
-| `ENCODER_LABEL`, `HEAD_LABEL`, `SERVED_ON` | empty | Display-only chips under the X-ray viewer, e.g. `MedSigLIP-448, frozen` |
+| `ENCODER_LABEL`, `HEAD_LABEL`, `SERVED_ON` | empty | Display-only chips under the X-ray viewer, e.g. `C-RADIOv2-H, frozen` |
 
 Real environment variables take precedence over `.env`.
 
@@ -135,6 +137,35 @@ Recommendations:
 - The Docker `HEALTHCHECK` calls `/api/health`, which returns 200 even when vLLM is down. Read the
   JSON to see whether vLLM is up.
 
+## Deploy the image head on a Nebius AI endpoint
+
+The image head (`python -m clm.vision.serve`) runs from a stock PyTorch image with an injected start
+script, [`deploy/nebius/start.sh`](deploy/nebius/start.sh). That script installs the repo code pinned to a
+commit and downloads about 3 GB of weights from Hugging Face on every cold start, so allow a few minutes
+before `/health` answers. It pins `transformers` to 4.x: 5.x needs torch 2.6 or newer and silently
+disables torch on this image. The pins were rehearsed end to end on torch 2.5.1 and Python 3.11.
+
+```bash
+cd app/deploy/nebius
+export CLM_API_KEY=$(openssl rand -hex 32)      # keep it: the app sends it as the Bearer token
+# Validate first; drop --dry-run to create the endpoint (that starts GPU billing).
+nebius ai endpoint create --dry-run \
+  --name second-eye-api \
+  --image pytorch/pytorch:2.5.1-cuda12.4-cudnn9-runtime \
+  --inject-file "./start.sh:/opt/start.sh" \
+  --container-command bash --args /opt/start.sh \
+  --env MODE=lean \
+  --platform gpu-l40s-a --preset 1gpu-8vcpu-32gb \
+  --container-port 8701 \
+  --auth token --token "$CLM_API_KEY" \
+  --disk-size 100Gi
+nebius ai endpoint get-by-name --name second-eye-api   # status.public_endpoints holds the https:// URL
+```
+
+The endpoint gets a managed `https://` URL without `--public`. The image needs an Ada or Hopper GPU
+(L40S, H100, H200); Blackwell cards such as the RTX 6000 need a CUDA 12.8 image and torch 2.7 or newer.
+Then set `CLM_URL` to that URL and `CLM_API_KEY` to the token. Delete the endpoint when you are done.
+
 ## Publish as a Hugging Face Space
 
 This repo is a **Gradio SDK** Space (see the front matter above). I chose Gradio SDK over Docker
@@ -161,13 +192,13 @@ To use the Docker SDK instead, set `sdk: docker` and `app_port: 8080` and remove
 ```json
 {
   "vllm": {"ok": true, "model_listed": true, "models": ["<id>"], "error": null, "status_code": null},
-  "clm":  {"ok": true, "model_listed": null, "models": ["fracatlas-medsiglip"], "error": null, "status_code": 200},
+  "clm":  {"ok": true, "model_listed": null, "models": ["radio_summary"], "error": null, "status_code": 200},
   "mock": false
 }
 ```
 
 `vllm` comes from `GET {VLLM_BASE_URL}/models`. `clm` is `null` when `CLM_URL` is unset; otherwise
-it comes from `GET {CLM_URL}/health`.
+it comes from `GET {CLM_URL}/health` (`models` holds the server's head variant).
 
 ### `POST /api/analyze`
 
@@ -195,13 +226,17 @@ curl -F file=@wrist.png http://localhost:8080/api/analyze
   "latency_ms": 2140.3,
   "total_ms": 2188.9,
   "mock": false,
-  "clm": {"p": 0.81, "threshold": 0.42, "flagged": true, "latency_ms": 37.5, "error": null},
+  "clm": {"p": 0.81, "threshold": 0.42, "flagged": true, "latency_ms": 37.5,
+          "calibrated": true, "operating_point": "val sensitivity >= 0.90", "error": null},
   "agreement": "agree | disagree | uncertain | null"
 }
 ```
 
 - If the reply is not valid JSON matching the schema: `reading: null`, `parse_error: true`, and `raw`
   holds the text. The status is still 200.
+- `clm` comes from the image head's `POST /predict` (multipart field `image`, the original upload, no
+  `options`, so the server uses its trained and calibrated option pair). `p` is the probability of
+  `"Yes, there is a fracture."`; `flagged` is `p >= threshold`; `latency_ms` is the server's compute time.
 - `clm` is `null` without `CLM_URL`. If CLM fails, it is `{"error": "…"}` with the other fields null,
   and the request still succeeds.
 - `agreement` is `uncertain` if the VLM said uncertain, `null` if there is no usable CLM result or

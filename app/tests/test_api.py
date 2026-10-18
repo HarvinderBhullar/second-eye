@@ -10,7 +10,7 @@ import respx
 from PIL import Image
 
 from second_eye.config import MAX_UPLOAD_BYTES, Settings
-from tests.conftest import CLM, GOOD_READING, VLLM, chat_reply, clm_reply, make_png, sent_json
+from tests.conftest import CLM, GOOD_READING, NO, VLLM, YES, chat_reply, clm_reply, make_png, sent_json
 
 pytestmark = pytest.mark.asyncio
 
@@ -170,7 +170,7 @@ async def test_large_image_is_downscaled_to_jpeg(make_client, settings):
 @respx.mock
 async def test_clm_down_does_not_fail_request(make_client, clm_settings, png):
     respx.post(f"{VLLM}/chat/completions").respond(json=chat_reply(json.dumps(GOOD_READING)))
-    respx.post(f"{CLM}/v1/systemone").mock(side_effect=httpx.ConnectError("refused"))
+    respx.post(f"{CLM}/predict").mock(side_effect=httpx.ConnectError("refused"))
     client = await make_client(clm_settings)
 
     r = await client.post("/api/analyze", files=upload(png))
@@ -178,29 +178,45 @@ async def test_clm_down_does_not_fail_request(make_client, clm_settings, png):
     assert r.status_code == 200
     body = r.json()
     assert body["reading"] == GOOD_READING
-    assert "Cannot reach CLM" in body["clm"]["error"]
+    assert "Cannot reach the image model" in body["clm"]["error"]
     assert body["agreement"] is None
 
 
 @respx.mock
-async def test_clm_request_uses_original_upload_and_exact_criteria(make_client, clm_settings, png):
+async def test_clm_request_sends_original_upload_with_trained_options(make_client, clm_settings, png):
     respx.post(f"{VLLM}/chat/completions").respond(json=chat_reply(json.dumps(GOOD_READING)))
-    route = respx.post(f"{CLM}/v1/systemone").respond(
-        json=clm_reply(0.81, 0.42), headers={"X-CLM-Latency-Ms": "37.5"}
-    )
+    route = respx.post(f"{CLM}/predict").respond(json=clm_reply(0.81, 0.42))
     client = await make_client(clm_settings)
 
     body = (await client.post("/api/analyze", files=upload(png))).json()
 
-    req = sent_json(route)
-    assert req["model"] == "fracatlas-medsiglip"
-    assert base64.b64decode(req["state"]["image"]) == png
-    assert req["questions"]["fx"]["criteria"] == {
-        "fracture": "Radiograph showing an acute bone fracture.",
-        "no_fracture": "Radiograph of intact bones with no fracture.",
+    req = route.calls.last.request
+    assert req.headers["Authorization"] == "Bearer clm-secret"
+    assert req.headers["Content-Type"].startswith("multipart/form-data")
+    assert png in req.content  # the original upload, byte for byte
+    assert b'name="options"' not in req.content  # the server's trained, calibrated pair
+    assert body["clm"] == {
+        "p": 0.81,
+        "threshold": 0.42,
+        "flagged": True,
+        "latency_ms": 37.5,
+        "calibrated": True,
+        "operating_point": "val sensitivity >= 0.90",
+        "error": None,
     }
-    assert body["clm"] == {"p": 0.81, "threshold": 0.42, "flagged": True, "latency_ms": 37.5, "error": None}
     assert body["agreement"] == "agree"
+
+
+@pytest.mark.parametrize("status, hint", [(401, "check CLM_API_KEY"), (503, "HTTP 503")])
+@respx.mock
+async def test_clm_http_errors_are_reported(make_client, clm_settings, png, status, hint):
+    respx.post(f"{VLLM}/chat/completions").respond(json=chat_reply(json.dumps(GOOD_READING)))
+    respx.post(f"{CLM}/predict").respond(status, json={"detail": "nope"})
+    client = await make_client(clm_settings)
+
+    body = (await client.post("/api/analyze", files=upload(png))).json()
+
+    assert hint in body["clm"]["error"] and body["reading"] == GOOD_READING
 
 
 @pytest.mark.parametrize(
@@ -211,15 +227,15 @@ async def test_clm_request_uses_original_upload_and_exact_criteria(make_client, 
         ("no", clm_reply(0.9, 0.5), "disagree"),
         ("yes", clm_reply(0.2, 0.5), "disagree"),
         ("uncertain", clm_reply(0.9, 0.5), "uncertain"),
-        ("no", clm_reply(0.3, None, choice="fracture"), "disagree"),  # no threshold: use choice
-        ("no", clm_reply(0.3, None, choice="no_fracture"), "agree"),
+        ("no", clm_reply(0.3, None, decision=YES), "disagree"),  # no threshold: use the decision
+        ("no", clm_reply(0.3, None, decision=NO), "agree"),
     ],
 )
 @respx.mock
 async def test_agreement(make_client, clm_settings, png, vlm_says, clm_body, expected):
     reading = {**GOOD_READING, "fracture_suspected": vlm_says}
     respx.post(f"{VLLM}/chat/completions").respond(json=chat_reply(json.dumps(reading)))
-    respx.post(f"{CLM}/v1/systemone").respond(json=clm_body)
+    respx.post(f"{CLM}/predict").respond(json=clm_body)
     client = await make_client(clm_settings)
 
     body = (await client.post("/api/analyze", files=upload(png))).json()
@@ -230,7 +246,7 @@ async def test_agreement(make_client, clm_settings, png, vlm_says, clm_body, exp
 @respx.mock
 async def test_agreement_null_when_vlm_unparseable(make_client, clm_settings, png):
     respx.post(f"{VLLM}/chat/completions").respond(json=chat_reply("not json"))
-    respx.post(f"{CLM}/v1/systemone").respond(json=clm_reply(0.9))
+    respx.post(f"{CLM}/predict").respond(json=clm_reply(0.9))
     client = await make_client(clm_settings)
 
     body = (await client.post("/api/analyze", files=upload(png))).json()
@@ -245,7 +261,7 @@ async def test_agreement_null_when_vlm_unparseable(make_client, clm_settings, pn
 @respx.mock
 async def test_health_lists_models(make_client, clm_settings):
     respx.get(f"{VLLM}/models").respond(json={"data": [{"id": "nvidia/test-vl"}, {"id": "other"}]})
-    respx.get(f"{CLM}/health").respond(json={"ok": True})
+    respx.get(f"{CLM}/health").respond(json={"ok": True, "variant": "radio_summary"})
     client = await make_client(clm_settings)
 
     body = (await client.get("/api/health")).json()
@@ -285,7 +301,7 @@ async def test_analyze_stream_reports_each_reader(clm_settings, png):
     from second_eye.analyze import analyze_stream
 
     respx.post(f"{VLLM}/chat/completions").respond(json=chat_reply(json.dumps(GOOD_READING)))
-    respx.post(f"{CLM}/v1/systemone").respond(json=clm_reply(0.9))
+    respx.post(f"{CLM}/predict").respond(json=clm_reply(0.9))
 
     events = [kind async for kind, _ in analyze_stream(png, clm_settings)]
 
@@ -297,7 +313,7 @@ async def test_analyze_stream_vlm_failure_still_reports_clm(clm_settings, png):
     from second_eye.analyze import analyze_stream
 
     respx.post(f"{VLLM}/chat/completions").mock(side_effect=httpx.ConnectError("refused"))
-    respx.post(f"{CLM}/v1/systemone").respond(json=clm_reply(0.9))
+    respx.post(f"{CLM}/predict").respond(json=clm_reply(0.9))
 
     events = {kind: value async for kind, value in analyze_stream(png, clm_settings)}
 

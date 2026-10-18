@@ -30,13 +30,21 @@ def chat_reply(content: str) -> dict:
     return {"choices": [{"index": 0, "message": {"role": "assistant", "content": content}}]}
 
 
-def clm_reply(p: float, threshold: float | None = 0.5, choice: str | None = None) -> dict:
-    fx: dict = {"probabilities": {"fracture": p, "no_fracture": 1 - p}}
-    if threshold is not None:
-        fx["threshold"] = threshold
-    if choice is not None:
-        fx["choice"] = choice
-    return {"answers": {"fx": fx}}
+YES, NO = "Yes, there is a fracture.", "No, there is no fracture."
+
+
+def clm_reply(p: float, threshold: float | None = 0.5, decision: str | None = None) -> dict:
+    """A reply shaped like `clm.vision.serve` POST /predict."""
+    return {
+        "question": "Is there a bone fracture in this X-ray?",
+        "options": [YES, NO],
+        "probabilities": {YES: p, NO: 1 - p},
+        "calibrated": threshold is not None,
+        "decision": decision or (YES if threshold is not None and p >= threshold else NO),
+        "threshold": threshold,
+        "operating_point": "val sensitivity >= 0.90" if threshold is not None else "argmax",
+        "latency_ms": 37.5,
+    }
 
 
 def make_png(size: tuple[int, int] = (64, 48), mode: str = "L") -> bytes:
@@ -57,7 +65,7 @@ def settings() -> Settings:
 
 @pytest.fixture
 def clm_settings(settings: Settings) -> Settings:
-    return Settings(**{**settings.__dict__, "clm_url": CLM})
+    return Settings(**{**settings.__dict__, "clm_url": CLM, "clm_api_key": "clm-secret"})
 
 
 @pytest_asyncio.fixture

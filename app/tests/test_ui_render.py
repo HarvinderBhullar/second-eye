@@ -36,7 +36,8 @@ def result(fracture="yes", clm=None, agreement=None, **overrides) -> dict:
     return {**base, **overrides}
 
 
-FLAGGED = {"p": 0.87, "threshold": 0.112, "flagged": True, "latency_ms": 41.0, "error": None}
+FLAGGED = {"p": 0.87, "threshold": 0.112, "flagged": True, "latency_ms": 41.0, "error": None,
+           "calibrated": True, "operating_point": "val sensitivity >= 0.90"}
 NOT_FLAGGED = {"p": 0.04, "threshold": 0.112, "flagged": False, "latency_ms": 39.0, "error": None}
 
 
@@ -49,7 +50,7 @@ def test_flagged_clm_verdict():
     assert "ring-red" in html and "fill red" in html
     assert "0.87" in html and "probability of fracture" in html
     assert "left:calc(11.2% - 1px)" in html
-    assert "Threshold 0.112 (calibrated, chosen on validation)" in html
+    assert "Threshold 0.112 (calibrated, val sensitivity &gt;= 0.90)" in html
     assert "41 ms" in html
 
 

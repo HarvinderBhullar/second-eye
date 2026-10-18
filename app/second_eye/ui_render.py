@@ -215,10 +215,14 @@ def render_pipeline(result: Result, ctx: ViewContext) -> str:
 # --- verdict card --------------------------------------------------------------------------------------
 
 
-def _threshold_text(threshold: float | None) -> str:
+def _threshold_text(threshold: float | None, clm: dict[str, Any] | None = None) -> str:
     if threshold is None:
         return "No threshold; using the model's choice"
-    return f"Threshold {threshold:.3f} (calibrated, chosen on validation)"
+    clm = clm or {}
+    if clm.get("calibrated") is False:
+        return f"Threshold {threshold:.3f} (not calibrated)"
+    point = clm.get("operating_point")
+    return f"Threshold {threshold:.3f} (calibrated, {point or 'chosen on validation'})"
 
 
 def render_verdict(result: Result, ctx: ViewContext) -> str:
@@ -254,7 +258,7 @@ def _clm_verdict(result: Result, ctx: ViewContext) -> str:
         "<div>"
         f'<div class="se-bar" role="img" aria-label="{escape(bar_label)}">'
         f'<div class="fill {colour}" style="width:{max(0.0, min(p, 1.0)) * 100:.1f}%"></div>{marker}</div>'
-        f'<div class="se-scale"><span>0</span><span>{escape(_threshold_text(threshold))}</span><span>1</span></div>'
+        f'<div class="se-scale"><span>0</span><span>{escape(_threshold_text(threshold, clm))}</span><span>1</span></div>'
         "</div>",
         f"ring-{colour}",
         "Verdict",
