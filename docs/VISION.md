@@ -247,6 +247,21 @@ Measured with `python scripts/vision/bench_latency.py --n 30` on val images:
 On the laptop, the first request with new options is dominated by Qwen3-8B (16 GB in BF16) paging
 back in from swap next to C-RADIO. On a GPU box, point `EMB_URL` at a vLLM pooling server instead.
 
+## Testing locally
+
+To test by hand on a laptop (Apple MPS, CUDA or CPU), using the head from the Hub:
+
+```bash
+scripts/vision/run_local.sh            # API on http://127.0.0.1:8701 (interactive docs at /docs)
+MODE=lean scripts/vision/run_local.sh  # built-in question only: no Qwen3-8B, starts in about a minute
+scripts/vision/run_local.sh notebook   # API in the background + examples/second_eye_demo.ipynb in JupyterLab
+```
+
+The notebook shows each X-ray next to its answer distribution and the decision threshold, and
+tries custom options and your own image. It also runs a 60-image validation smoke test (on a 24 GB
+Mac: AUROC 0.95, sensitivity 0.95, specificity 0.82, p50 296 ms; optimistic, because the
+threshold was tuned on val). `MODEL=local` serves `checkpoints/vision` instead of the Hub copy.
+
 ## Deploying as an endpoint
 
 The endpoint only needs the public head on the Hub, not the dataset or any training. On a fresh
