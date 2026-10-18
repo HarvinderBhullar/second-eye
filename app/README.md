@@ -143,7 +143,7 @@ The image head (`python -m clm.vision.serve`) runs from a stock PyTorch image wi
 script, [`deploy/nebius/start.sh`](deploy/nebius/start.sh). That script installs the repo code pinned to a
 commit and downloads about 3 GB of weights from Hugging Face on every cold start, so allow a few minutes
 before `/health` answers. It pins `transformers` to 4.x: 5.x needs torch 2.6 or newer and silently
-disables torch on this image. The pins were rehearsed end to end on torch 2.5.1 and Python 3.11.
+disables torch on the 2.5.1 image. The pins were rehearsed end to end on torch 2.5.1 and 2.8.0.
 
 ```bash
 cd app/deploy/nebius
@@ -151,19 +151,20 @@ export CLM_API_KEY=$(openssl rand -hex 32)      # keep it: the app sends it as t
 # Validate first; drop --dry-run to create the endpoint (that starts GPU billing).
 nebius ai endpoint create --dry-run \
   --name second-eye-api \
-  --image pytorch/pytorch:2.5.1-cuda12.4-cudnn9-runtime \
+  --image pytorch/pytorch:2.8.0-cuda12.8-cudnn9-runtime \
   --inject-file "./start.sh:/opt/start.sh" \
   --container-command bash --args /opt/start.sh \
   --env MODE=lean \
-  --platform gpu-l40s-a --preset 1gpu-8vcpu-32gb \
+  --platform gpu-rtx6000-a --preset 1gpu-24vcpu-218gb \
   --container-port 8701 \
   --auth token --token "$CLM_API_KEY" \
   --disk-size 100Gi
 nebius ai endpoint get-by-name --name second-eye-api   # status.public_endpoints holds the https:// URL
 ```
 
-The endpoint gets a managed `https://` URL without `--public`. The image needs an Ada or Hopper GPU
-(L40S, H100, H200); Blackwell cards such as the RTX 6000 need a CUDA 12.8 image and torch 2.7 or newer.
+The endpoint gets a managed `https://` URL without `--public`. Match the image to the GPU: Blackwell
+(RTX 6000) needs CUDA 12.8 and torch 2.7 or newer, as above; on L40S or H100 the
+`2.5.1-cuda12.4-cudnn9-runtime` image also works (for example `--platform gpu-l40s-a --preset 1gpu-8vcpu-32gb`).
 Then set `CLM_URL` to that URL and `CLM_API_KEY` to the token. Delete the endpoint when you are done.
 
 ## Publish as a Hugging Face Space

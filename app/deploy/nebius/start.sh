@@ -1,14 +1,15 @@
 #!/bin/bash
-# Start script for the Second Eye image head on a Nebius AI endpoint (pytorch/pytorch:2.5.1-cuda12.4-cudnn9-runtime).
+# Start script for the Second Eye image head on a Nebius AI endpoint, from a stock pytorch/pytorch image:
+#   2.8.0-cuda12.8-cudnn9-runtime for Blackwell (RTX 6000), or 2.5.1-cuda12.4-cudnn9-runtime for L40S/H100.
 # Code comes from GitHub, pinned to a commit; weights download from Hugging Face on first start.
 # Injected with: --inject-file "./start.sh:/opt/start.sh" --container-command bash --args /opt/start.sh
 set -euo pipefail
 
 CODE_REF="${CODE_REF:-f575b34a408eeac9a4d001d6a6b4b47c9eb10828}"   # HarvinderBhullar/second-eye main, Oct 2026
 
-echo "[start] installing dependencies (torch comes from the image and must stay 2.5.1)"
+echo "[start] installing dependencies (torch comes from the image and must not be replaced)"
 # transformers 5.x needs torch >= 2.6 and silently disables torch on this image, so stay on 4.x.
-# These pins were rehearsed end to end (health + calibrated /predict) on torch 2.5.1 / Python 3.11.
+# These pins were rehearsed end to end (health + calibrated /predict) on torch 2.5.1 and 2.8.0.
 pip install -q --no-cache-dir "torch==$(python -c 'import torch; print(torch.__version__.split("+")[0])')" \
     "transformers==4.57.6" "timm==1.0.30" "open_clip_torch==3.3.0" \
     accelerate safetensors huggingface_hub numpy requests pillow \
