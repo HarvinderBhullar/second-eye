@@ -30,6 +30,9 @@ EMB_DIR = os.path.join("data", "vision", "emb")
 
 
 def device() -> str:
+    """``CLM_DEVICE`` if set (as in ``clm.heads``), else cuda, mps or cpu."""
+    if os.environ.get("CLM_DEVICE"):
+        return os.environ["CLM_DEVICE"]
     if torch.cuda.is_available():
         return "cuda"
     return "mps" if torch.backends.mps.is_available() else "cpu"

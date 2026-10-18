@@ -241,10 +241,37 @@ Measured with `python scripts/vision/bench_latency.py --n 30` on val images:
 | Apple M5 Pro (MPS, 24 GB) | trained options | 307 ms | 309 ms |
 | Apple M5 Pro (MPS, 24 GB) | custom options, cached | 308 ms | 311 ms |
 | Apple M5 Pro (MPS, 24 GB) | custom options, first time | 80–90 s | |
-| Nebius H100 | | *pending* | |
+| Apple M5 Pro, CPU only (`CLM_DEVICE=cpu`, lean mode) | trained options | 1,175 ms | 1,256 ms |
+| Nebius GPU VM | | *pending* | |
 
 On the laptop, the first request with new options is dominated by Qwen3-8B (16 GB in BF16) paging
 back in from swap next to C-RADIO. On a GPU box, point `EMB_URL` at a vLLM pooling server instead.
+
+## Deploying as an endpoint
+
+The endpoint only needs the public head on the Hub, not the dataset or any training. On a fresh
+Ubuntu VM (GPU or CPU), one script installs it and runs it as a systemd service on `:8701`:
+
+```bash
+git clone -b hackathon https://github.com/HarvinderBhullar/second-eye && cd second-eye
+scripts/vision/deploy/setup_vm.sh               # MODE=lean to skip Qwen3-8B; EMB_URL=... for a remote vLLM encoder
+```
+
+- **API key.** The script generates `SECOND_EYE_API_KEY` and stores it in `/etc/second-eye.env`.
+  `/predict` then requires `Authorization: Bearer <key>`; `/health` stays open.
+- **Modes.** *full* answers custom options with an in-process Qwen3-8B (about 16 GB; a GPU is
+  recommended). *lean* answers only the trained question and never loads Qwen3-8B.
+- **Remote encoder.** With `EMB_URL` and `CLM_EMB_API_KEY`, custom options use a vLLM pooling
+  endpoint instead, e.g. a Nebius Serverless vLLM endpoint running
+  `--model Qwen/Qwen3-8B --served-model-name qwen3-8b --runner pooling --max-model-len 2048`.
+- **Network.** The service binds to `127.0.0.1`. For HTTPS, put Caddy in front
+  (`scripts/vision/deploy/Caddyfile`, which needs a DNS name). For a quick demo, use
+  `ssh -L 8701:localhost:8701 <vm>`.
+- **Limits.** Uploads up to 20 MB, images up to 50 MP, and 2–8 options of at most 300 characters.
+
+```bash
+curl -s -X POST https://<host>/predict -H "Authorization: Bearer $SECOND_EYE_API_KEY" -F image=@xray.jpg
+```
 
 ## Prior work
 
