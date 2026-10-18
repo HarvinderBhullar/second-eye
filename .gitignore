@@ -18,3 +18,11 @@ logs/*.log
 examples/t_rex/data/
 examples/t_rex/cache/
 examples/t_rex/artifacts/
+# vision extension (Second Eye): embeddings, weights, local venv
+*.npy
+*.npz
+*.safetensors
+*.bin
+*.ckpt
+.venv-vision/
+hf_export/

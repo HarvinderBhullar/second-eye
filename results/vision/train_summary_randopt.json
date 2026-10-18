@@ -1,0 +1,14 @@
+{
+  "radio_mean": {
+    "val_auroc": 0.9204977464236724,
+    "best_epoch": 8,
+    "epochs_run": 34,
+    "scale": 14.281137466430664
+  },
+  "radio_summary": {
+    "val_auroc": 0.9349990201842053,
+    "best_epoch": 24,
+    "epochs_run": 50,
+    "scale": 14.259468078613281
+  }
+}

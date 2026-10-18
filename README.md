@@ -1,4 +1,8 @@
 <!-- markdownlint-disable MD001 MD041 -->
+> **Second Eye** is a research-prototype vision extension of
+> [Contrastive-LM/CLM](https://github.com/Contrastive-LM/CLM): a frozen image encoder and a trained
+> image state head, scored against CLM's frozen action tower. **Not a medical device.** See
+> [docs/VISION.md](docs/VISION.md). Everything else in this README is the original CLM.
 <p align="center">
   <picture>
     <img alt="CLM v0.1" src="assets/logo.png" width=45%>

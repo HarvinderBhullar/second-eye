@@ -1,0 +1,17 @@
+[Unit]
+Description=Second Eye: CLM vision endpoint (research prototype, not a medical device)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=@USER@
+WorkingDirectory=@DIR@
+EnvironmentFile=/etc/second-eye.env
+ExecStart=@DIR@/.venv-vision/bin/python -m clm.vision.serve @ARGS@
+Restart=always
+RestartSec=5
+# first start downloads the encoder weights
+TimeoutStartSec=1800
+
+[Install]
+WantedBy=multi-user.target

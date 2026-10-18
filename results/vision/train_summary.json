@@ -1,0 +1,20 @@
+{
+  "best_variant": "radio_summary",
+  "selected_on": "val AUROC of the CLM head",
+  "variants": {
+    "radio_mean": {
+      "val_auroc": 0.9228493043307858,
+      "best_epoch": 8,
+      "epochs_run": 34,
+      "scale": 14.333081245422363,
+      "linprobe_val_auroc": 0.9000587889476779
+    },
+    "radio_summary": {
+      "val_auroc": 0.9353517538702725,
+      "best_epoch": 24,
+      "epochs_run": 50,
+      "scale": 14.348237991333008,
+      "linprobe_val_auroc": 0.9264550264550264
+    }
+  }
+}

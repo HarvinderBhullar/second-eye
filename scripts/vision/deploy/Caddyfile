@@ -1,0 +1,11 @@
+# HTTPS in front of the Second Eye API (automatic Let's Encrypt certificate).
+# Needs a DNS name pointing at the VM's public IP and ports 80 + 443 open.
+#   sudo apt-get install -y caddy
+#   sudo cp scripts/vision/deploy/Caddyfile /etc/caddy/Caddyfile   # set DOMAIN below or in the env
+#   sudo systemctl reload caddy
+{$DOMAIN:second-eye.example.com} {
+	request_body {
+		max_size 21MB
+	}
+	reverse_proxy 127.0.0.1:8701
+}

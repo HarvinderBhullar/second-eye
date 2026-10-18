@@ -1,0 +1,146 @@
+image_id,path,label,reason,detail
+IMG0000290.jpg,data/FracAtlas/images/Non_fractured/IMG0000290.jpg,0,grey_band,"199 uniform rows (43.8%), mean 207"
+IMG0000337.jpg,data/FracAtlas/images/Non_fractured/IMG0000337.jpg,0,grey_band,"31 uniform rows (6.8%), mean 231"
+IMG0000415.jpg,data/FracAtlas/images/Non_fractured/IMG0000415.jpg,0,grey_band,"17 uniform rows (3.7%), mean 231"
+IMG0000514.jpg,data/FracAtlas/images/Non_fractured/IMG0000514.jpg,0,grey_band,"36 uniform rows (9.7%), mean 219"
+IMG0000515.jpg,data/FracAtlas/images/Non_fractured/IMG0000515.jpg,0,grey_band,"27 uniform rows (7.2%), mean 227"
+IMG0000600.jpg,data/FracAtlas/images/Fractured/IMG0000600.jpg,1,grey_band,"11 uniform rows (2.4%), mean 231"
+IMG0000612.jpg,data/FracAtlas/images/Non_fractured/IMG0000612.jpg,0,grey_band,"14 uniform rows (3.1%), mean 231"
+IMG0000625.jpg,data/FracAtlas/images/Non_fractured/IMG0000625.jpg,0,grey_band,"24 uniform rows (6.4%), mean 231"
+IMG0000626.jpg,data/FracAtlas/images/Non_fractured/IMG0000626.jpg,0,grey_band,"21 uniform rows (5.6%), mean 231"
+IMG0000676.jpg,data/FracAtlas/images/Non_fractured/IMG0000676.jpg,0,grey_band,"22 uniform rows (4.8%), mean 236"
+IMG0000694.jpg,data/FracAtlas/images/Non_fractured/IMG0000694.jpg,0,grey_band,"11 uniform rows (2.4%), mean 230"
+IMG0000716.jpg,data/FracAtlas/images/Non_fractured/IMG0000716.jpg,0,grey_band,"14 uniform rows (3.1%), mean 231"
+IMG0000760.jpg,data/FracAtlas/images/Non_fractured/IMG0000760.jpg,0,grey_band,"19 uniform rows (5.1%), mean 232"
+IMG0000799.jpg,data/FracAtlas/images/Non_fractured/IMG0000799.jpg,0,grey_band,"14 uniform rows (3.1%), mean 154"
+IMG0001117.jpg,data/FracAtlas/images/Non_fractured/IMG0001117.jpg,0,grey_band,"42 uniform rows (9.3%), mean 227"
+IMG0001138.jpg,data/FracAtlas/images/Non_fractured/IMG0001138.jpg,0,grey_band,"15 uniform rows (4.0%), mean 231"
+IMG0001139.jpg,data/FracAtlas/images/Non_fractured/IMG0001139.jpg,0,grey_band,"53 uniform rows (14.2%), mean 231"
+IMG0001205.jpg,data/FracAtlas/images/Non_fractured/IMG0001205.jpg,0,grey_band,"10 uniform rows (2.2%), mean 231"
+IMG0001307.jpg,data/FracAtlas/images/Non_fractured/IMG0001307.jpg,0,grey_band,"16 uniform rows (3.5%), mean 231"
+IMG0001308.jpg,data/FracAtlas/images/Non_fractured/IMG0001308.jpg,0,grey_band,"16 uniform rows (3.5%), mean 227"
+IMG0001323.jpg,data/FracAtlas/images/Non_fractured/IMG0001323.jpg,0,grey_band,"31 uniform rows (6.8%), mean 231"
+IMG0001391.jpg,data/FracAtlas/images/Fractured/IMG0001391.jpg,1,grey_band,"10 uniform rows (2.2%), mean 231"
+IMG0001427.jpg,data/FracAtlas/images/Non_fractured/IMG0001427.jpg,0,grey_band,"23 uniform rows (5.1%), mean 178"
+IMG0001454.jpg,data/FracAtlas/images/Non_fractured/IMG0001454.jpg,0,grey_band,"23 uniform rows (5.1%), mean 230"
+IMG0001493.jpg,data/FracAtlas/images/Non_fractured/IMG0001493.jpg,0,grey_band,"15 uniform rows (3.3%), mean 231"
+IMG0001549.jpg,data/FracAtlas/images/Non_fractured/IMG0001549.jpg,0,grey_band,"25 uniform rows (5.5%), mean 230"
+IMG0001558.jpg,data/FracAtlas/images/Non_fractured/IMG0001558.jpg,0,grey_band,"17 uniform rows (3.7%), mean 231"
+IMG0001597.jpg,data/FracAtlas/images/Non_fractured/IMG0001597.jpg,0,grey_band,"38 uniform rows (8.4%), mean 231"
+IMG0001612.jpg,data/FracAtlas/images/Non_fractured/IMG0001612.jpg,0,grey_band,"15 uniform rows (3.3%), mean 231"
+IMG0001762.jpg,data/FracAtlas/images/Fractured/IMG0001762.jpg,1,grey_band,"37 uniform rows (8.1%), mean 231"
+IMG0001768.jpg,data/FracAtlas/images/Non_fractured/IMG0001768.jpg,0,grey_band,"14 uniform rows (3.1%), mean 231"
+IMG0001948.jpg,data/FracAtlas/images/Fractured/IMG0001948.jpg,1,grey_band,"60 uniform rows (16.1%), mean 231"
+IMG0002034.jpg,data/FracAtlas/images/Non_fractured/IMG0002034.jpg,0,grey_band,"16 uniform rows (3.5%), mean 237"
+IMG0002110.jpg,data/FracAtlas/images/Non_fractured/IMG0002110.jpg,0,grey_band,"54 uniform rows (14.5%), mean 231"
+IMG0002123.jpg,data/FracAtlas/images/Fractured/IMG0002123.jpg,1,grey_band,"28 uniform rows (6.2%), mean 230"
+IMG0002406.jpg,data/FracAtlas/images/Fractured/IMG0002406.jpg,1,grey_band,"44 uniform rows (9.7%), mean 230"
+IMG0002430.jpg,data/FracAtlas/images/Fractured/IMG0002430.jpg,1,grey_band,"12 uniform rows (2.6%), mean 237"
+IMG0002465.jpg,data/FracAtlas/images/Fractured/IMG0002465.jpg,1,grey_band,"22 uniform rows (4.8%), mean 231"
+IMG0002495.jpg,data/FracAtlas/images/Fractured/IMG0002495.jpg,1,grey_band,"22 uniform rows (4.8%), mean 231"
+IMG0002496.jpg,data/FracAtlas/images/Fractured/IMG0002496.jpg,1,grey_band,"54 uniform rows (11.9%), mean 231"
+IMG0002609.jpg,data/FracAtlas/images/Fractured/IMG0002609.jpg,1,grey_band,"30 uniform rows (6.6%), mean 231"
+IMG0002691.jpg,data/FracAtlas/images/Non_fractured/IMG0002691.jpg,0,grey_band,"20 uniform rows (4.4%), mean 234"
+IMG0002831.jpg,data/FracAtlas/images/Fractured/IMG0002831.jpg,1,grey_band,"43 uniform rows (9.5%), mean 231"
+IMG0002833.jpg,data/FracAtlas/images/Fractured/IMG0002833.jpg,1,grey_band,"15 uniform rows (3.3%), mean 231"
+IMG0003040.jpg,data/FracAtlas/images/Non_fractured/IMG0003040.jpg,0,grey_band,"23 uniform rows (5.1%), mean 231"
+IMG0003041.jpg,data/FracAtlas/images/Non_fractured/IMG0003041.jpg,0,grey_band,"10 uniform rows (2.2%), mean 231"
+IMG0003052.jpg,data/FracAtlas/images/Non_fractured/IMG0003052.jpg,0,grey_band,"23 uniform rows (5.1%), mean 231"
+IMG0003061.jpg,data/FracAtlas/images/Non_fractured/IMG0003061.jpg,0,grey_band,"10 uniform rows (2.2%), mean 231"
+IMG0003067.jpg,data/FracAtlas/images/Non_fractured/IMG0003067.jpg,0,grey_band,"10 uniform rows (2.2%), mean 231"
+IMG0003088.jpg,data/FracAtlas/images/Non_fractured/IMG0003088.jpg,0,grey_band,"10 uniform rows (2.2%), mean 235"
+IMG0003095.jpg,data/FracAtlas/images/Non_fractured/IMG0003095.jpg,0,grey_band,"14 uniform rows (3.1%), mean 230"
+IMG0003097.jpg,data/FracAtlas/images/Non_fractured/IMG0003097.jpg,0,grey_band,"10 uniform rows (2.2%), mean 231"
+IMG0003120.jpg,data/FracAtlas/images/Non_fractured/IMG0003120.jpg,0,grey_band,"10 uniform rows (2.2%), mean 231"
+IMG0003121.jpg,data/FracAtlas/images/Fractured/IMG0003121.jpg,1,grey_band,"11 uniform rows (2.4%), mean 231"
+IMG0003135.jpg,data/FracAtlas/images/Non_fractured/IMG0003135.jpg,0,grey_band,"10 uniform rows (2.2%), mean 235"
+IMG0003157.jpg,data/FracAtlas/images/Fractured/IMG0003157.jpg,1,grey_band,"59 uniform rows (13.0%), mean 217"
+IMG0003200.jpg,data/FracAtlas/images/Fractured/IMG0003200.jpg,1,grey_band,"62 uniform rows (13.7%), mean 231"
+IMG0003450.jpg,data/FracAtlas/images/Non_fractured/IMG0003450.jpg,0,grey_band,"30 uniform rows (8.0%), mean 231"
+IMG0003517.jpg,data/FracAtlas/images/Non_fractured/IMG0003517.jpg,0,grey_band,"36 uniform rows (7.9%), mean 231"
+IMG0003537.jpg,data/FracAtlas/images/Non_fractured/IMG0003537.jpg,0,grey_band,"22 uniform rows (4.8%), mean 231"
+IMG0003542.jpg,data/FracAtlas/images/Non_fractured/IMG0003542.jpg,0,grey_band,"19 uniform rows (4.2%), mean 230"
+IMG0003552.jpg,data/FracAtlas/images/Non_fractured/IMG0003552.jpg,0,grey_band,"20 uniform rows (4.4%), mean 231"
+IMG0003604.jpg,data/FracAtlas/images/Non_fractured/IMG0003604.jpg,0,grey_band,"21 uniform rows (4.6%), mean 231"
+IMG0003991.jpg,data/FracAtlas/images/Non_fractured/IMG0003991.jpg,0,grey_band,"23 uniform rows (5.1%), mean 232"
+IMG0003992.jpg,data/FracAtlas/images/Non_fractured/IMG0003992.jpg,0,grey_band,"12 uniform rows (2.6%), mean 231"
+IMG0004017.jpg,data/FracAtlas/images/Non_fractured/IMG0004017.jpg,0,grey_band,"17 uniform rows (3.7%), mean 231"
+IMG0004028.jpg,data/FracAtlas/images/Non_fractured/IMG0004028.jpg,0,truncated,image file is truncated (20 bytes not processed)
+IMG0004029.jpg,data/FracAtlas/images/Non_fractured/IMG0004029.jpg,0,truncated,image file is truncated (22 bytes not processed)
+IMG0004036.jpg,data/FracAtlas/images/Non_fractured/IMG0004036.jpg,0,truncated,image file is truncated (14 bytes not processed)
+IMG0004042.jpg,data/FracAtlas/images/Fractured/IMG0004042.jpg,1,grey_band,"10 uniform rows (2.2%), mean 231"
+IMG0004043.jpg,data/FracAtlas/images/Fractured/IMG0004043.jpg,1,grey_band,"12 uniform rows (2.6%), mean 231"
+IMG0004070.jpg,data/FracAtlas/images/Non_fractured/IMG0004070.jpg,0,truncated,image file is truncated (41 bytes not processed)
+IMG0004073.jpg,data/FracAtlas/images/Non_fractured/IMG0004073.jpg,0,truncated,image file is truncated (3 bytes not processed)
+IMG0004076.jpg,data/FracAtlas/images/Non_fractured/IMG0004076.jpg,0,truncated,image file is truncated (0 bytes not processed)
+IMG0004079.jpg,data/FracAtlas/images/Non_fractured/IMG0004079.jpg,0,truncated,image file is truncated (24 bytes not processed)
+IMG0004084.jpg,data/FracAtlas/images/Non_fractured/IMG0004084.jpg,0,truncated,image file is truncated (5 bytes not processed)
+IMG0004092.jpg,data/FracAtlas/images/Non_fractured/IMG0004092.jpg,0,truncated,image file is truncated (3 bytes not processed)
+IMG0004098.jpg,data/FracAtlas/images/Non_fractured/IMG0004098.jpg,0,truncated,image file is truncated (17 bytes not processed)
+IMG0004100.jpg,data/FracAtlas/images/Non_fractured/IMG0004100.jpg,0,truncated,image file is truncated (15 bytes not processed)
+IMG0004109.jpg,data/FracAtlas/images/Non_fractured/IMG0004109.jpg,0,truncated,image file is truncated (5 bytes not processed)
+IMG0004119.jpg,data/FracAtlas/images/Non_fractured/IMG0004119.jpg,0,truncated,image file is truncated (6 bytes not processed)
+IMG0004120.jpg,data/FracAtlas/images/Non_fractured/IMG0004120.jpg,0,truncated,image file is truncated (8 bytes not processed)
+IMG0004121.jpg,data/FracAtlas/images/Non_fractured/IMG0004121.jpg,0,truncated,image file is truncated (40 bytes not processed)
+IMG0004122.jpg,data/FracAtlas/images/Non_fractured/IMG0004122.jpg,0,truncated,image file is truncated (26 bytes not processed)
+IMG0004123.jpg,data/FracAtlas/images/Non_fractured/IMG0004123.jpg,0,truncated,image file is truncated (17 bytes not processed)
+IMG0004129.jpg,data/FracAtlas/images/Non_fractured/IMG0004129.jpg,0,truncated,image file is truncated (6 bytes not processed)
+IMG0004130.jpg,data/FracAtlas/images/Non_fractured/IMG0004130.jpg,0,truncated,image file is truncated (8 bytes not processed)
+IMG0004134.jpg,data/FracAtlas/images/Non_fractured/IMG0004134.jpg,0,truncated,image file is truncated (1 bytes not processed)
+IMG0004142.jpg,data/FracAtlas/images/Non_fractured/IMG0004142.jpg,0,truncated,image file is truncated (32 bytes not processed)
+IMG0004143.jpg,data/FracAtlas/images/Non_fractured/IMG0004143.jpg,0,truncated,image file is truncated (10 bytes not processed)
+IMG0004145.jpg,data/FracAtlas/images/Non_fractured/IMG0004145.jpg,0,truncated,image file is truncated (10 bytes not processed)
+IMG0004148.jpg,data/FracAtlas/images/Non_fractured/IMG0004148.jpg,0,truncated,image file is truncated (14 bytes not processed)
+IMG0004149.jpg,data/FracAtlas/images/Non_fractured/IMG0004149.jpg,0,truncated,image file is truncated (33 bytes not processed)
+IMG0004154.jpg,data/FracAtlas/images/Non_fractured/IMG0004154.jpg,0,truncated,image file is truncated (22 bytes not processed)
+IMG0004155.jpg,data/FracAtlas/images/Non_fractured/IMG0004155.jpg,0,truncated,image file is truncated (18 bytes not processed)
+IMG0004159.jpg,data/FracAtlas/images/Non_fractured/IMG0004159.jpg,0,truncated,image file is truncated (8 bytes not processed)
+IMG0004169.jpg,data/FracAtlas/images/Non_fractured/IMG0004169.jpg,0,truncated,image file is truncated (14 bytes not processed)
+IMG0004170.jpg,data/FracAtlas/images/Non_fractured/IMG0004170.jpg,0,truncated,image file is truncated (11 bytes not processed)
+IMG0004173.jpg,data/FracAtlas/images/Non_fractured/IMG0004173.jpg,0,truncated,image file is truncated (0 bytes not processed)
+IMG0004174.jpg,data/FracAtlas/images/Non_fractured/IMG0004174.jpg,0,truncated,image file is truncated (4 bytes not processed)
+IMG0004177.jpg,data/FracAtlas/images/Non_fractured/IMG0004177.jpg,0,truncated,image file is truncated (34 bytes not processed)
+IMG0004189.jpg,data/FracAtlas/images/Non_fractured/IMG0004189.jpg,0,truncated,image file is truncated (16 bytes not processed)
+IMG0004194.jpg,data/FracAtlas/images/Non_fractured/IMG0004194.jpg,0,truncated,image file is truncated (10 bytes not processed)
+IMG0004226.jpg,data/FracAtlas/images/Non_fractured/IMG0004226.jpg,0,truncated,image file is truncated (23 bytes not processed)
+IMG0004227.jpg,data/FracAtlas/images/Non_fractured/IMG0004227.jpg,0,truncated,image file is truncated (30 bytes not processed)
+IMG0004228.jpg,data/FracAtlas/images/Non_fractured/IMG0004228.jpg,0,truncated,image file is truncated (17 bytes not processed)
+IMG0004251.jpg,data/FracAtlas/images/Non_fractured/IMG0004251.jpg,0,truncated,image file is truncated (19 bytes not processed)
+IMG0004252.jpg,data/FracAtlas/images/Non_fractured/IMG0004252.jpg,0,truncated,image file is truncated (67 bytes not processed)
+IMG0004255.jpg,data/FracAtlas/images/Non_fractured/IMG0004255.jpg,0,truncated,image file is truncated (20 bytes not processed)
+IMG0004256.jpg,data/FracAtlas/images/Non_fractured/IMG0004256.jpg,0,truncated,image file is truncated (66 bytes not processed)
+IMG0004258.jpg,data/FracAtlas/images/Non_fractured/IMG0004258.jpg,0,truncated,image file is truncated (0 bytes not processed)
+IMG0004259.jpg,data/FracAtlas/images/Non_fractured/IMG0004259.jpg,0,truncated,image file is truncated (7 bytes not processed)
+IMG0004263.jpg,data/FracAtlas/images/Non_fractured/IMG0004263.jpg,0,truncated,image file is truncated (24 bytes not processed)
+IMG0004273.jpg,data/FracAtlas/images/Non_fractured/IMG0004273.jpg,0,truncated,image file is truncated (8 bytes not processed)
+IMG0004275.jpg,data/FracAtlas/images/Non_fractured/IMG0004275.jpg,0,truncated,image file is truncated (24 bytes not processed)
+IMG0004278.jpg,data/FracAtlas/images/Non_fractured/IMG0004278.jpg,0,truncated,image file is truncated (29 bytes not processed)
+IMG0004279.jpg,data/FracAtlas/images/Non_fractured/IMG0004279.jpg,0,truncated,image file is truncated (5 bytes not processed)
+IMG0004285.jpg,data/FracAtlas/images/Non_fractured/IMG0004285.jpg,0,truncated,image file is truncated (9 bytes not processed)
+IMG0004286.jpg,data/FracAtlas/images/Non_fractured/IMG0004286.jpg,0,truncated,image file is truncated (46 bytes not processed)
+IMG0004288.jpg,data/FracAtlas/images/Non_fractured/IMG0004288.jpg,0,truncated,image file is truncated (1 bytes not processed)
+IMG0004290.jpg,data/FracAtlas/images/Non_fractured/IMG0004290.jpg,0,truncated,image file is truncated (54 bytes not processed)
+IMG0004291.jpg,data/FracAtlas/images/Non_fractured/IMG0004291.jpg,0,truncated,image file is truncated (13 bytes not processed)
+IMG0004297.jpg,data/FracAtlas/images/Non_fractured/IMG0004297.jpg,0,truncated,image file is truncated (5 bytes not processed)
+IMG0004298.jpg,data/FracAtlas/images/Non_fractured/IMG0004298.jpg,0,truncated,image file is truncated (19 bytes not processed)
+IMG0004302.jpg,data/FracAtlas/images/Non_fractured/IMG0004302.jpg,0,grey_band,"23 uniform rows (5.1%), mean 231"
+IMG0004304.jpg,data/FracAtlas/images/Non_fractured/IMG0004304.jpg,0,truncated,image file is truncated (22 bytes not processed)
+IMG0004308.jpg,data/FracAtlas/images/Non_fractured/IMG0004308.jpg,0,truncated,image file is truncated (40 bytes not processed)
+IMG0004310.jpg,data/FracAtlas/images/Non_fractured/IMG0004310.jpg,0,grey_band,"23 uniform rows (5.1%), mean 231"
+IMG0004346.jpg,data/FracAtlas/images/Non_fractured/IMG0004346.jpg,0,grey_band,"23 uniform rows (5.1%), mean 231"
+IMG0004347.jpg,data/FracAtlas/images/Non_fractured/IMG0004347.jpg,0,truncated,image file is truncated (40 bytes not processed)
+IMG0004375.jpg,data/FracAtlas/images/Fractured/IMG0004375.jpg,1,grey_band,"10 uniform rows (2.2%), mean 231"
+IMG0004376.jpg,data/FracAtlas/images/Fractured/IMG0004376.jpg,1,grey_band,"12 uniform rows (2.6%), mean 231"
+IMG0002295.jpg,data/FracAtlas/images/Non_fractured/IMG0002295.jpg,0,duplicate,same bytes as IMG0000001.jpg
+IMG0002294.jpg,data/FracAtlas/images/Non_fractured/IMG0002294.jpg,0,duplicate,same bytes as IMG0000006.jpg
+IMG0002292.jpg,data/FracAtlas/images/Non_fractured/IMG0002292.jpg,0,duplicate,same bytes as IMG0000000.jpg
+IMG0002299.jpg,data/FracAtlas/images/Fractured/IMG0002299.jpg,1,duplicate,same bytes as IMG0000261.jpg
+IMG0002300.jpg,data/FracAtlas/images/Fractured/IMG0002300.jpg,1,duplicate,same bytes as IMG0000261.jpg
+IMG0002379.jpg,data/FracAtlas/images/Fractured/IMG0002379.jpg,1,duplicate,same bytes as IMG0002298.jpg
+IMG0002296.jpg,data/FracAtlas/images/Non_fractured/IMG0002296.jpg,0,duplicate,same bytes as IMG0000002.jpg
+IMG0000005.jpg,data/FracAtlas/images/Non_fractured/IMG0000005.jpg,0,duplicate,same bytes as IMG0000003.jpg
+IMG0002291.jpg,data/FracAtlas/images/Non_fractured/IMG0002291.jpg,0,duplicate,same bytes as IMG0000003.jpg
+IMG0002293.jpg,data/FracAtlas/images/Non_fractured/IMG0002293.jpg,0,duplicate,same bytes as IMG0000003.jpg
+IMG0004341.jpg,data/FracAtlas/images/Non_fractured/IMG0004341.jpg,0,duplicate,same bytes as IMG0004314.jpg
+IMG0002297.jpg,data/FracAtlas/images/Non_fractured/IMG0002297.jpg,0,duplicate,same bytes as IMG0000004.jpg
+IMG0002615.jpg,data/FracAtlas/images/Fractured/IMG0002615.jpg,1,duplicate,same bytes as IMG0001763.jpg
