@@ -2,6 +2,7 @@
 
     python -m clm.vision.embed_image --probe                 # one image, print shapes (checkpoint 1)
     python -m clm.vision.embed_image --encoder radio         # embed every image in data/vision/manifest.csv
+    python -m clm.vision.embed_image --check                 # sanity-check every cached variant
 
 Encoders:
   radio     C-RADIOv2-H, the vision tower Nemotron Nano 2 VL uses (vision_config.auto_map
@@ -94,15 +95,49 @@ def embed_all(encoder: str, manifest: str, batch: int) -> None:
         print(f"{k}: {X.shape} -> {EMB_DIR}/{k}.npy")
 
 
+def load_variant(variant: str) -> tuple[np.ndarray, list[str]]:
+    """-> (embeddings [n, d], paths in row order)."""
+    import pandas as pd
+    X = np.load(os.path.join(EMB_DIR, f"{variant}.npy"))
+    return X, pd.read_csv(os.path.join(EMB_DIR, f"{variant}.index.csv")).path.tolist()
+
+
+def check(manifest: str) -> None:
+    """Dims, NaNs, and mean cosine for same-class vs different-class pairs (2000 random pairs each)."""
+    import glob
+    import pandas as pd
+    lab = pd.read_csv(manifest).set_index("path").label
+    rng = np.random.default_rng(0)
+    for f in sorted(glob.glob(os.path.join(EMB_DIR, "*.index.csv"))):
+        v = os.path.basename(f)[:-len(".index.csv")]
+        X, paths = load_variant(v)
+        y = lab.loc[paths].to_numpy()
+        i, j = rng.integers(0, len(X), (2, 20000))
+        cos = (X[i] * X[j]).sum(1)
+        ff, nn, fn = cos[(y[i] == 1) & (y[j] == 1)], cos[(y[i] == 0) & (y[j] == 0)], cos[y[i] != y[j]]
+        print(f"{v}: {X.shape}  nan={bool(np.isnan(X).any())}  norm={np.linalg.norm(X, axis=1).mean():.3f}  "
+              f"cos frac-frac {ff[:2000].mean():.4f}  non-non {nn[:2000].mean():.4f}  frac-non {fn[:2000].mean():.4f}")
+    opt = os.path.join(EMB_DIR, "options.npz")
+    if os.path.exists(opt):
+        o = np.load(opt)
+        print(f"options: raw {o['raw'].shape}  proj {o['proj'].shape}  nan={bool(np.isnan(o['proj']).any())}")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--encoder", default="radio", choices=sorted(ENCODERS))
     ap.add_argument("--manifest", default="data/vision/manifest.csv")
     ap.add_argument("--batch", type=int, default=16)
     ap.add_argument("--probe", action="store_true", help="run one image and print shapes")
+    ap.add_argument("--check", action="store_true", help="sanity-check the cached embeddings")
     a = ap.parse_args()
     torch.manual_seed(0)
-    probe(a.encoder) if a.probe else embed_all(a.encoder, a.manifest, a.batch)
+    if a.check:
+        check(a.manifest)
+    elif a.probe:
+        probe(a.encoder)
+    else:
+        embed_all(a.encoder, a.manifest, a.batch)
 
 
 if __name__ == "__main__":
