@@ -182,6 +182,17 @@ The AUROC CI is a 1,000-sample stratified bootstrap. ECE uses 15 equal-width bin
 - Image size alone reaches 0.616 AUROC. That is mostly body region (the small scans are largely
   hands, which have a higher fracture rate), a confounder rather than a pixel shortcut.
 
+## Released model
+
+The selected head (`radio_summary`) is on the Hugging Face Hub:
+[harvinderbhullar/second-eye](https://huggingface.co/harvinderbhullar/second-eye). It contains
+`model.safetensors` (head and trained option vectors), `config.json`, `calibration.json` and a
+model card. `python -m clm.vision.hub export` rebuilds it from the local checkpoint.
+
+```bash
+python -m clm.vision.serve --model harvinderbhullar/second-eye --port 8701
+```
+
 ## Serving
 
 ```bash
